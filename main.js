@@ -90,5 +90,7 @@ function draw(){
 draw();
 
 if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("/service-worker.js");
+  navigator.serviceWorker.register("/service-worker.js")
+    .then(() => console.log("SW登録成功"))
+    .catch(err => console.log("SW登録失敗", err));
 }
