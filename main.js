@@ -9,7 +9,7 @@ setTimeout(() => {
     }
   }
 }, 2500);
-console.log(Notification.permission);
+alert(Notification.permission);
 
 
 
