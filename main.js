@@ -1,22 +1,14 @@
-
-// 2.5秒後に表示
 setTimeout(() => {
   if (Notification.permission === "default") {
-    document.getElementById("notifyUI").style.display = "block";
+    if (confirm("アップデート通知を受け取りますか？")) {
+      Notification.requestPermission().then(permission => {
+        if (permission === "granted") {
+          alert("通知ONになりました 👍");
+        }
+      });
+    }
   }
 }, 2500);
-
-// ボタン押したとき
-function enableNotify() {
-  Notification.requestPermission().then(permission => {
-    if (permission === "granted") {
-      alert("通知ON 👍");
-    }
-  });
-
-  document.getElementById("notifyUI").style.display = "none";
-}
-
 
 
 
