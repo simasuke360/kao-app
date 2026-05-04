@@ -12,6 +12,9 @@ setTimeout(() => {
 alert(Notification.permission);
 
 
+alert("JS動いてる");
+
+
 
 
 import { expressions } from "./expressions.js";
