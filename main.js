@@ -1,3 +1,6 @@
+let tapCount = 0;
+let currentExpression = "normal";
+
 setTimeout(() => {
   if (Notification.permission === "default") {
     if (confirm("アップデート通知を受け取りますか？")) {
@@ -9,16 +12,11 @@ setTimeout(() => {
     }
   }
 }, 2500);
+
 alert(Notification.permission);
-
-
 alert("JS動いてる");
 
-
-
-
 import { expressions } from "./expressions.js";
-
 
 const c = document.getElementById("c");
 const ctx = c.getContext("2d");
@@ -26,9 +24,37 @@ const ctx = c.getContext("2d");
 let current = { eyeX:0, eyeY:0, blink:1, mouthY:0, mouthCurve:0 };
 let target = { eyeX:0, eyeY:0, blink:1, mouthY:0, mouthCurve:0 };
 
-// ランダム表情
+// 👇 タップで感情変化（＋即反映）
+document.addEventListener("click", () => {
+  tapCount++;
+
+  if (tapCount < 5) {
+    currentExpression = "happy";
+  } else if (tapCount < 10) {
+    currentExpression = "excited";
+  } else {
+    currentExpression = "angry";
+  }
+
+  newTarget(); // ★即反応
+
+  setTimeout(() => {
+    tapCount = 0;
+    currentExpression = "happy";
+  }, 3000);
+});
+
+// 👇 ランダム or タップ優先
 function newTarget(){
-  const exp = expressions[Math.floor(Math.random()*expressions.length)];
+  let exp;
+
+  if (currentExpression !== "normal") {
+    exp = expressions.find(e => e.name === currentExpression);
+  } else {
+    exp = expressions[Math.floor(Math.random()*expressions.length)];
+  }
+
+  if (!exp) exp = expressions[0]; // ★安全対策
 
   target.eyeX = exp.eyeX();
   target.eyeY = exp.eyeY();
@@ -109,6 +135,7 @@ function draw(){
 
 draw();
 
+// service worker
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("/service-worker.js")
     .then(() => console.log("SW登録成功"))
